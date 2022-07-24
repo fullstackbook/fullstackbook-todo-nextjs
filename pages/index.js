@@ -51,7 +51,10 @@ export default function Home() {
   async function handleAddToDo() {
     const res = await fetch(process.env.NEXT_PUBLIC_API_URL + `/todos/`, {
       method: 'POST',
-      body: JSON.stringify({}),
+      body: JSON.stringify({
+        name: '',
+        completed: false
+      }),
       headers: {
         'Content-Type': 'application/json'
       }
