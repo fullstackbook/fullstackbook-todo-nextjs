@@ -6,10 +6,35 @@
 
 .title {
   text-align: center;
+  font-size: 24px;
+  margin: 10px;
 }
 
-.todo {
-  margin: 10px;
+.todoInput {
+  padding: 5px;
   border: 1px solid black;
-  padding: 10px;
+  width: 210px;
+  height: 40px;
+  margin: 5px;
+}
+
+.addToDoBtn {
+  margin: 20px;
+  width: 260px;
+  cursor: pointer;
+  padding: 5px;
+  font-size: 16px;
+}
+
+.toDoRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 5px 20px;
+}
+
+.deleteBtn {
+  background: none;
+  border: 0;
+  cursor: pointer;
 }

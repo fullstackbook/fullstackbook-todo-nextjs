@@ -34,8 +34,6 @@ export default function Home() {
     setTodos(copy)
   }
 
-
-
   async function updateTodo(todo) {
     const data = {
       name: todo.name,
@@ -48,6 +46,36 @@ export default function Home() {
         'Content-Type': 'application/json'
       }
     })
+  }
+
+  async function handleAddToDo() {
+    const res = await fetch(process.env.NEXT_PUBLIC_API_URL + `/todos/`, {
+      method: 'POST',
+      body: JSON.stringify({}),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    if (res.ok) {
+      const json = await res.json();
+      const copy = [...todos, json]
+      setTodos(copy)
+    }
+  }
+
+  async function handleDeleteToDo(id) {
+    const res = await fetch(process.env.NEXT_PUBLIC_API_URL + `/todos/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    if (res.ok) {
+      const idx = todos.findIndex((todo) => todo.id === id)
+      const copy = [...todos]
+      copy.splice(idx, 1)
+      setTodos(copy)
+    }
   }
 
   return (
@@ -66,14 +94,18 @@ export default function Home() {
           <div>
             {todos.map((todo) => {
               return (
-                <div key={todo.id}>
-                  <input name="completed" type="checkbox" checked={todo.completed} value={todo.completed} onChange={(e) => handleToDoChange(e, todo.id)}></input>
-                  <input name="name" type="text" className={styles.todo} value={todo.name} onChange={(e) => handleToDoChange(e, todo.id)}></input>
+                <div className={styles.toDoRow} key={todo.id}>
+                  <input className={styles.toDoCheckbox} name="completed" type="checkbox" checked={todo.completed} value={todo.completed} onChange={(e) => handleToDoChange(e, todo.id)}></input>
+                  <input className={styles.todoInput} autoComplete='off' name="name" type="text" value={todo.name} onChange={(e) => handleToDoChange(e, todo.id)}></input>
+                  <button className={styles.deleteBtn} onClick={() => handleDeleteToDo(todo.id)}><Image src="/material-symbols_delete-outline-sharp.svg" width="24px" height="24px" /></button>
                 </div>
               )
             })}
           </div>
         )}
+        <div>
+          <button className={styles.addToDoBtn} onClick={handleAddToDo}>+ Add To Do</button>
+        </div>
       </div>
     </div>
   )
