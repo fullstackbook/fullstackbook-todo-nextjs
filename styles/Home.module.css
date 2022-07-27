@@ -10,10 +10,11 @@
   margin: 10px;
 }
 
-.todoInput {
+.todoInput,
+.todoSearch {
   padding: 5px;
   border: 1px solid black;
-  width: 210px;
+  width: 194px;
   height: 40px;
   margin: 5px;
 }
@@ -37,4 +38,12 @@
   background: none;
   border: 0;
   cursor: pointer;
+}
+
+.searchContainer {
+  margin: 20px;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  left: 5px;
 }

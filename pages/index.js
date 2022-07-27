@@ -18,6 +18,7 @@ export default function Home() {
   }
 
   const debouncedUpdateTodo = useCallback(debounce(updateTodo, 500), [])
+  const debouncedSearchTodos = useCallback(debounce(searchTodos, 500), [])
 
   function handleToDoChange(e, id) {
     const target = e.target
@@ -81,6 +82,23 @@ export default function Home() {
     }
   }
 
+  async function searchTodos(value) {
+    const res = await fetch(process.env.NEXT_PUBLIC_API_URL + `/todos/search?q=${value}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    if (res.ok) {
+      const json = await res.json()
+      setTodos(json)
+    }
+  }
+
+  function handleSearchChange(e) {
+    debouncedSearchTodos(e.target.value)
+  }
+
   return (
     <div>
       <Head>
@@ -89,6 +107,10 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={styles.container}>
+        <div className={styles.searchContainer}>
+          <input className={styles.todoSearch} type="text" onChange={(e) => handleSearchChange(e)}></input>
+          <Image src="/material-symbols_search.svg" width="24px" height="24px" />
+        </div>
         <h1 className={styles.title}>To Do</h1>
         {!todos && (
           <div>Loading...</div>
