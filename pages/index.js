@@ -6,6 +6,7 @@ import { debounce } from 'lodash';
 
 export default function Home() {
   const [todos, setTodos] = useState(null)
+  const [mainInput, setMainInput] = useState('')
 
   useEffect(() => {
     fetchTodos()
@@ -18,7 +19,6 @@ export default function Home() {
   }
 
   const debouncedUpdateTodo = useCallback(debounce(updateTodo, 500), [])
-  const debouncedSearchTodos = useCallback(debounce(searchTodos, 500), [])
 
   function handleToDoChange(e, id) {
     const target = e.target
@@ -49,11 +49,11 @@ export default function Home() {
     })
   }
 
-  async function handleAddToDo() {
+  async function addToDo(name) {
     const res = await fetch(process.env.NEXT_PUBLIC_API_URL + `/todos/`, {
       method: 'POST',
       body: JSON.stringify({
-        name: '',
+        name: name,
         completed: false
       }),
       headers: {
@@ -82,36 +82,31 @@ export default function Home() {
     }
   }
 
-  async function searchTodos(value) {
-    const res = await fetch(process.env.NEXT_PUBLIC_API_URL + `/todos/search?q=${value}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    if (res.ok) {
-      const json = await res.json()
-      setTodos(json)
-    }
+  function handleMainInputChange(e) {
+    setMainInput(e.target.value)
   }
 
-  function handleSearchChange(e) {
-    debouncedSearchTodos(e.target.value)
+  function handleKeyDown(e) {
+    if (e.key === 'Enter') {
+      if (mainInput.length > 0) {
+        addToDo(mainInput)
+        setMainInput('')
+      }
+    }
   }
 
   return (
     <div>
       <Head>
-        <title>Full Stack Book To Do Next.js</title>
-        <meta name="description" content="Full Stack Book To Do Next.js" />
+        <title>Full Stack Book To Do</title>
+        <meta name="description" content="Full Stack Book To Do" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={styles.container}>
-        <div className={styles.searchContainer}>
-          <input className={styles.todoSearch} type="text" onChange={(e) => handleSearchChange(e)}></input>
-          <Image src="/material-symbols_search.svg" width="24px" height="24px" />
-        </div>
         <h1 className={styles.title}>To Do</h1>
+        <div className={styles.mainInputContainer}>
+          <input className={styles.mainInput} placeholder="What needs to be done?" value={mainInput} onChange={(e) => handleMainInputChange(e)} onKeyDown={handleKeyDown}></input>
+        </div>
         {!todos && (
           <div>Loading...</div>
         )}
@@ -128,8 +123,10 @@ export default function Home() {
             })}
           </div>
         )}
-        <div>
-          <button className={styles.addToDoBtn} onClick={handleAddToDo}>+ Add To Do</button>
+        <div className={styles.filters}>
+          <button>All</button>
+          <button>Active</button>
+          <button>Completed</button>
         </div>
       </div>
     </div>
