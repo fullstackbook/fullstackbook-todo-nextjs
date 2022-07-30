@@ -7,13 +7,18 @@ import { debounce } from 'lodash';
 export default function Home() {
   const [todos, setTodos] = useState(null)
   const [mainInput, setMainInput] = useState('')
+  const [filter, setFilter] = useState()
 
   useEffect(() => {
     fetchTodos()
   }, [])
 
-  async function fetchTodos() {
-    const res = await fetch(process.env.NEXT_PUBLIC_API_URL + '/todos')
+  async function fetchTodos(completed) {
+    let path = '/todos'
+    if (completed !== undefined) {
+      path = `/todos?completed=${completed}`
+    }
+    const res = await fetch(process.env.NEXT_PUBLIC_API_URL + path)
     const json = await res.json()
     setTodos(json)
   }
@@ -95,6 +100,11 @@ export default function Home() {
     }
   }
 
+  function handleFilterChange(value) {
+    setFilter(value)
+    fetchTodos(value)
+  }
+
   return (
     <div>
       <Head>
@@ -124,9 +134,9 @@ export default function Home() {
           </div>
         )}
         <div className={styles.filters}>
-          <button>All</button>
-          <button>Active</button>
-          <button>Completed</button>
+          <button className={`${styles.filterBtn} ${filter === undefined && styles.filterActive}`} onClick={() => handleFilterChange()}>All</button>
+          <button className={`${styles.filterBtn} ${filter === false && styles.filterActive}`} onClick={() => handleFilterChange(false)}>Active</button>
+          <button className={`${styles.filterBtn} ${filter === true && styles.filterActive}`} onClick={() => handleFilterChange(true)}>Completed</button>
         </div>
       </div>
     </div>
