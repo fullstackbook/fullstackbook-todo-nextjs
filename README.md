@@ -2,11 +2,9 @@
 
 https://www.fullstackbook.com/docs/projects/todo/frontend/nextjs
 
-## Configuration
+## Setup
 
 Copy `.env.example` to `.env`.
-
-## Setup
 
 ```
 npm install
