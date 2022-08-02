@@ -1,5 +1,5 @@
 import styles from '../styles/todo-list.module.css'
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { debounce } from 'lodash'
 import ToDo from './todo'
 
@@ -7,9 +7,13 @@ export default function ToDoList() {
   const [todos, setTodos] = useState(null)
   const [mainInput, setMainInput] = useState('')
   const [filter, setFilter] = useState()
+  const didFetchRef = useRef(false)
 
   useEffect(() => {
-    fetchTodos()
+    if (didFetchRef.current === false) {
+      didFetchRef.current = true
+      fetchTodos()
+    }
   }, [])
 
   async function fetchTodos(completed) {
