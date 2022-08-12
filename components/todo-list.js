@@ -120,7 +120,7 @@ export default function ToDoList() {
         <div>
           {todos.map((todo) => {
             return (
-              <ToDo todo={todo} onDelete={handleDeleteToDo} onChange={handleToDoChange} />
+              <ToDo key={todo.id} todo={todo} onDelete={handleDeleteToDo} onChange={handleToDoChange} />
             )
           })}
         </div>
