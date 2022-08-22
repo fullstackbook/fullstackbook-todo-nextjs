@@ -58,7 +58,7 @@ export default function ToDoList() {
   }
 
   async function addToDo(name) {
-    const res = await fetch(process.env.NEXT_PUBLIC_API_URL + `/todos/`, {
+    const res = await fetch(process.env.NEXT_PUBLIC_API_URL + `/todos`, {
       method: 'POST',
       body: JSON.stringify({
         name: name,
