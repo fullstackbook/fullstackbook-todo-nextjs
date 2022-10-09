@@ -1,11 +1,8 @@
-const { Client } = require('pg')
+import { Client } from 'pg'
 const connectionString = process.env.DB_URL
 
 const db = new Client({
-  connectionString,
-  ssl: {
-    rejectUnauthorized: false
-  }
+  connectionString
 })
 db.connect()
 
