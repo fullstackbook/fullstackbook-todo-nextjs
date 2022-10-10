@@ -8,10 +8,11 @@ bundle:
 	zip -r bundle.zip . -x node_modules/\* -x .git/\* -x .next/\* -x bundle.zip -x .env
 
 upload_bundle:
-	scp -i key.pem bundle.zip ec2-user@${HOST}:
+	scp -i key.pem bundle.zip ubuntu@${HOST}:
 
 upload_deploy_script:
-	scp -i key.pem deploy.sh ec2-user@${HOST}:
+	scp -i key.pem deploy.sh ubuntu@${HOST}:
 
 execute_deploy_script:
-	ssh -i key.pem ec2-user@${HOST} "bash deploy.sh"
+	ssh -i key.pem ubuntu@${HOST} "bash deploy.sh"
+
