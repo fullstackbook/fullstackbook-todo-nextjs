@@ -5,7 +5,7 @@ deploy:
 	make execute_deploy_script
 
 bundle:
-	zip -r bundle.zip . -x node_modules/\* -x .git/\* -x .next/\* -x bundle.zip
+	zip -r bundle.zip . -x node_modules/\* -x .git/\* -x .next/\* -x bundle.zip -x .env
 
 upload_bundle:
 	scp -i key.pem bundle.zip ec2-user@${HOST}:
