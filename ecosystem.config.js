@@ -1,7 +1,7 @@
 module.exports = {
   apps: [{
     name: "app",
-    script: 'server.js',
+    script: 'npm start',
   }],
 
   // Deployment Configuration
