@@ -15,4 +15,3 @@ upload_deploy_script:
 
 execute_deploy_script:
 	ssh -i key.pem ubuntu@${HOST} "bash deploy.sh"
-
